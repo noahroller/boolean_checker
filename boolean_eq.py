@@ -1,7 +1,10 @@
 #!/usr/bin/python3.7
-from boolean_simp import simplify
+import boolean_simp
 
-simplify("a+b+c*d", values)
+variables = {'a': 1, 'b': 0, 'c': 1}
+expression = '(a+b+c)'
 
-expression = ''
-variables_l = list(set(expression))
+print(type(variables))
+print(type(expression))
+boolean_simp.simplify(expression, variables)
+print('here')
