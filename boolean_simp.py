@@ -1,9 +1,9 @@
-#!/usr/bin/python3.7
 import re
 
-
-# Boolean Algebra Simplifier - Noah Roller
-# Probably a better way to do this, but I had certain parts of python I wanted to use
+'''
+Boolean Algebra Simplifier - Noah Roller
+Probably a better way to do this, but I had certain parts of python I wanted to use
+'''
 
 # sets the boolean expression
 def set_expression():
@@ -32,13 +32,12 @@ def set_values(expression):
         legal = False
         while not legal:
             values[key] = input('Set the value of ' + key + ': ')
-            if re.match("^[01]*$", values[key]) and values[key] is not None:
+            if values[key] == '0' or values[key] == '1':
+                values[key] = int(values[key])
                 legal = True
             else:
                 print("Please enter a '0' or '1'")
 
-    values['0'] = 0
-    values['1'] = 1
     return values
 
 
@@ -46,7 +45,7 @@ def set_values(expression):
 def find_inner_bracket(expression):
     index = 0
     length = len(expression)
-    # searches each index for a '(' in which the next brack is a ')'
+    # searches each index for a '(' in which the next bracket is a ')'
     while index < length:
         i = expression.find('(', index)
         if i == -1:
@@ -61,14 +60,14 @@ def find_inner_bracket(expression):
         index = i + 1
 
 
-# returns the expression in the boundries given
-def get_bracket(expression, boundry):
-    return expression[boundry[0] + 1:boundry[1]]
+# returns the expression in the boundaries given
+def get_bracket(expression, boundary):
+    return expression[boundary[0] + 1:boundary[1]]
 
 
 # evaluates the value of two variables in a given statement
-def evaluate_expression(bracket_exp, values, boundry, expression):
-    start = boundry[0]
+def evaluate_expression(bracket_exp, values, boundary, expression):
+    start = boundary[0]
 
     # order of operations, AND first
     if bracket_exp.find('*') != -1:
@@ -87,7 +86,7 @@ def evaluate_expression(bracket_exp, values, boundry, expression):
 
 # AND gate
 def and_gate(a, b):
-    if a == '1' and b == '1':
+    if a == 1 and b == 1:
         return 1
     else:
         return 0
@@ -95,7 +94,7 @@ def and_gate(a, b):
 
 # OR gate
 def or_gate(a, b):
-    if a == '1' or b == '1':
+    if a == 1 or b == 1:
         return 1
     else:
         return 0
@@ -134,6 +133,4 @@ def simplify(expression, values):
 if __name__ == '__main__':
     expression = set_expression()
     values = set_values(expression)
-    print(type(expression))
-    print(type(values))
     simplify(expression, values)
