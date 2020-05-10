@@ -5,6 +5,7 @@ Boolean Algebra Simplifier - Noah Roller
 Probably a better way to do this, but I had certain parts of python I wanted to use
 '''
 
+
 # sets the boolean expression
 def set_expression():
     legal = False
@@ -20,13 +21,17 @@ def set_expression():
     return expression
 
 
-# sets and returns the variable values of a given expression
-def set_values(expression):
-    global values
+#determines variables needed to be set
+def determine_values(expression):
     variables = list(set(expression))
     variables.sort()
+    #had issues with normal for loop removal
     variables = filter(lambda i: i != '+' and i != '*' and i != '(' and i != ')', variables)
+    return variables
 
+
+# sets and returns the variable values of a given expression
+def set_values(variables):
     values = {}
     for key in variables:
         legal = False
@@ -61,6 +66,7 @@ def find_inner_bracket(expression):
 
 
 # returns the expression in the boundaries given
+# can not combine with find_inner_index
 def get_bracket(expression, boundary):
     return expression[boundary[0] + 1:boundary[1]]
 
@@ -82,7 +88,7 @@ def evaluate_expression(bracket_exp, values, boundary, expression):
         # OR the terms on each side of the operand
         result = or_gate(values[bracket_exp[num - 1]], values[bracket_exp[num + 1]])
         return expression[:start + num] + str(result) + expression[start + num + 3:]
-
+    return str(values[expression[1]])
 
 # AND gate
 def and_gate(a, b):
@@ -127,10 +133,13 @@ def simplify(expression, values):
             inside_bracket = get_bracket(expression, bracket)
             result = evaluate_expression(inside_bracket, values, bracket, expression)
             expression = remove_bracket(result)
-    print('result: ' + expression)
+    return expression
 
 
 if __name__ == '__main__':
     expression = set_expression()
-    values = set_values(expression)
-    simplify(expression, values)
+    values = set_values(determine_values(expression))
+    print(expression)
+    print(values)
+    print(simplify(expression, values))
+
