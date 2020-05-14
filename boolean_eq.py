@@ -1,30 +1,20 @@
 import boolean_simp
 
-'''
-Two expressions with the same variables are equal if all possible input combinations
-give the same output for each expression. For multiple variables, they are equal if the
-output is the same for all possible combinations of common variables. Example: a+b+c and
-a++c+d+e both contain a and c. The are only equal if all combinations (0,0), (0,1), (1,0),
-and (1,1) for a and c yield the same results between expressions.
-*/
-'''
-
-
-def set_expression():
-    expression = boolean_simp.set_expression()
-    return expression
+#Boolean Algebra Equivalence Checker - Noah Roller
 
 
 def generate_tests(expression1, expression2):
+    """
+    Generates a list of tests to test the expression in the format of
+    ['000','001','010',...] <- for three variables
 
-    #common_char = set(expression1)&set(expression2)
-
-    #common_var = []
-    #for elem in common_char:
-    #    if elem != '+' and elem != '*' and elem != '(' and elem != ')':
-    #        common_var.append(elem)
-
-    #length = len(common_var)
+    :parameter:
+        string expression1 - The first expression being evaluated
+        string expression1 - The second expression being evaluated
+    :returns:
+        list - List of strings containing the test values
+        list - List of all variables in expression
+    """
 
     all_char = set(expression1+expression2)
 
@@ -44,7 +34,19 @@ def generate_tests(expression1, expression2):
 
     return combinations, all_var
 
+
 def test_expression(expression, combinations, all_var): #could determine all_var from expression if need be
+    """
+    Tests the expression using the combinations
+
+    :parameter:
+        string expression - The expression being tested
+        list combinations - List of combination strings, must containing leading zeros
+        list all_var - Set of all variables in the two expressions
+    :returns:
+        list - Results of all the tests of the expression
+    """
+
     results = []
     for elem in combinations:
         values = list(elem)
@@ -55,9 +57,10 @@ def test_expression(expression, combinations, all_var): #could determine all_var
     return results
 
 if __name__ == '__main__':
-    print ("Enter two expressions to determine if they are equivalent.")
-    expression1 = set_expression()
-    expression2 = set_expression()
+    print("Enter two expressions to determine if they are equivalent.")
+    print("NOT is currently not supported, will be added later.")
+    expression1 = boolean_simp.set_expression()
+    expression2 = boolean_simp.set_expression()
 
     combinations, all_var = generate_tests(expression1, expression2)
     results1 = test_expression(expression1, combinations, all_var)
